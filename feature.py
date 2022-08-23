@@ -28,7 +28,7 @@ def load_csv_data(data_path):
     df = pd.read_csv(data_path)
     return df
 
-# 给定列名，对给定列名生成词典
+# 给定列名，生成字典
 def gen_col_dict(df, col_name):
     dict_col = []
     for line in df[col_name].dropna():
@@ -41,12 +41,13 @@ def gen_col_dict(df, col_name):
         dict_col.extend(line)
     return dict_col
 
+# 保存字典到文件
 def dict_to_file(dict_col, file_path):
     with open(file_path, "w") as fo:
         for line in dict_col:
             fo.write(line + "\n")
 
-# 对dict_col字典的每一个元素进行分词处理
+# 对每个元素分词，生成分词后的字典
 def jieba_process(dict_col):
     dict_col_jieba = []
     for word in dict_col:
