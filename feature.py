@@ -97,40 +97,6 @@ def dict_filter_pun(dict_col):
     return dict_col_filter
 
 
-def dict_filter(dict_col):
-    # 去重
-    dict_col = list(set(dict_col))
-    print("去重后{}的大小是{}".format('dict_col', len(dict_col)))
-
-    # 过滤标点符号
-    pun_masks_english = [",", ".", "/", "[", "]", "{", "}", "(", ")", ":", "*", "#", "!", " ", "\"", "\\"]
-    pun_masks_chinese = ["，", "。", "、", "（", "）", "：", "！", "”", "“"]
-    pun_masks = pun_masks_english + pun_masks_chinese
-    #print(pun_masks)
-
-    dict_col_filter = []
-
-    for word in dict_col:
-        # 过滤单个字母和汉字
-        if len(word) <= 1:
-            continue
-        
-        # 过滤数字
-        if word.isdigit():
-            continue
-
-        # 过滤标点符号
-        flag = 1
-        for pun in pun_masks:
-            if pun in word:
-                flag = 0
-                break
-        if flag == 1:
-            dict_col_filter.append(word)
-
-    return dict_col_filter
-
-
 if __name__ == "__main__":
     print("running...")
 
