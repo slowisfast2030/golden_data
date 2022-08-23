@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-
+import re
 import json
 import pandas as pd
 from zhconv import convert
@@ -19,12 +19,19 @@ def load_csv_data(data_path):
 def gen_col_dict(df, col_name):
     dict_col = []
     for line in df[col_name].dropna():
+        # print(line)
         # 转中文简体
         line = convert(line, "zh-hans")
         # 转英文小写
-        line = line.lower() 
-        # 字符串转列表
-        line = json.loads(line)
+        line = line.lower()
+
+        # 字符串转列表。
+        # 一般而言，每一行都是列表数据，但有的数据入库时忘了[]。
+        if line.startswith("["):
+            line = json.loads(line)
+        else:
+            # 如果后续需要更多的分词标点，记得添加
+            line = re.split(",|，", line)
         dict_col.extend(line)
     return dict_col
 
@@ -92,6 +99,7 @@ if __name__ == "__main__":
     # csv文件和待处理的列名
     data_path = './sample_20220821_spark.csv'
     col_name = 'tags'
+    col_name = 'skills'
 
     # 读取csv文件
     df = load_csv_data(data_path)
