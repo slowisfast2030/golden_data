@@ -7,7 +7,6 @@ def load_dict(dict_path=None):
     vectorizer = CountVectorizer()
     # 分词并建立词汇表
     vectorizer.fit(dict_col)
-    
     return vectorizer
 
 def gen_vector(vectorizer, text):
