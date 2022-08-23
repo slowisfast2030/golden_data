@@ -8,7 +8,6 @@ import jieba
 '''
 可以添加自定义词典
 出现了”以上“？
-xiaoma
 '''
 
 # 读取csv文件
