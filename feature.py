@@ -106,13 +106,13 @@ if __name__ == "__main__":
 
     # 原始col列构成的字典
     dict_col = gen_col_dict(df, col_name)
-    dict_to_file(dict_col, './dict_tags')
-    print("原始词典{}的大小是{}".format('dict_tags', len(dict_col)))
+    dict_to_file(dict_col, './dict_col')
+    print("原始词典{}的大小是{}".format('dict_col', len(dict_col)))
 
     # jieba分词后的字典
     dict_col_jieba = jieba_process(dict_col)
-    dict_to_file(dict_col_jieba, './dict_tags_jieba')
-    print("jieba分词后{}的大小是{}".format('dict_tags_jieba', len(dict_col_jieba)))
+    dict_to_file(dict_col_jieba, './dict_col_jieba')
+    print("jieba分词后{}的大小是{}".format('dict_col_jieba', len(dict_col_jieba)))
 
     # 执行一系列过滤操作后的字典
     dict_col_filter = dict_col_jieba
@@ -126,6 +126,6 @@ if __name__ == "__main__":
     print("去除标点后{}的大小是{}".format('dict_col_filter', len(dict_col_filter)))
     
     # 保存过滤后的字典
-    dict_to_file(dict_col_filter, './dict_tags_jieba_filter')
+    dict_to_file(dict_col_filter, './dict_col_jieba_filter')
 
     print("all is well")
