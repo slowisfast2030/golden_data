@@ -19,7 +19,7 @@ def gen_vector(vectorizer, text):
 
 if __name__ == "__main__":
     dict_path = "./dict_col_jieba_filter"
-    text = '"tHu","HeLlo mit","运营","搭建","招聘","架构","法律","客服"'
+    text = '"THu","HeLlo mit","运营","搭建","招聘","架构","法律","客服"'
 
     vectorizer = load_dict(dict_path)
     print(vectorizer.vocabulary_)
