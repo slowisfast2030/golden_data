@@ -6,20 +6,7 @@ from zhconv import convert
 import jieba
 
 '''
-转中文简体
-转英文小写
 可以添加自定义词典
-jieba精确模式合适
-
-原始数据的列是一个列表，列表里的每一个元素一般都是单一的，但是也有类似于斜杆分割的情况。建议分词后ji'zhong
-通过jieba分词后会有很多标点符号，可以获取分词后的词典整体过滤
-
-
-去重 
-去掉标点符号
-去掉数字
-去掉单个字母和汉字
-
 出现了”以上“？
 '''
 
@@ -51,6 +38,7 @@ def dict_to_file(dict_col, file_path):
 def jieba_process(dict_col):
     dict_col_jieba = []
     for word in dict_col:
+        # 精确模式
         seg_list = jieba.lcut(word, cut_all=False)
         dict_col_jieba.extend(seg_list)
     return dict_col_jieba
