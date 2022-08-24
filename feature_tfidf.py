@@ -88,3 +88,5 @@ if __name__ == "__main__":
     df[col_name_jieba_filter] = df.apply(col_jieba_filter_fun, axis=1)
 
     print(df[[col_name, col_name_jieba, col_name_jieba_filter]])
+
+    print("all is well")
