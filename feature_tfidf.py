@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from zhconv import convert
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import PCA
 
 
 # 读取csv文件
@@ -71,10 +72,16 @@ def get_tfidf(df, col_name):
     text = df[col_name]
     
     vectorizer = TfidfVectorizer()
+    # 返回的是nparray
     vector = vectorizer.fit_transform(text)
-    # 打印tfidf的大小
-    print(vector.shape)
-    return vector.toarray()
+    return pd.DataFrame(vector.toarray())
+
+# 对tfidf降维到n维
+def get_tfidf_pca(tfidf, n=20):
+    pca = PCA(n_components=n)
+    tfidf_pca = pca.fit_transform(tfidf)
+    tfidf_pca = pd.DataFrame(tfidf_pca)
+    return tfidf_pca
 
 
 if __name__ == "__main__":
@@ -91,12 +98,15 @@ if __name__ == "__main__":
     df = load_csv_data(data_path)
     # 空值填充
     df[col_name].fillna('[]', inplace=True)
-
+    # 对要处理的文本列进行预处理
     df[col_name_jieba] = df.apply(col_jieba_fun, axis=1)
     df[col_name_jieba_filter] = df.apply(col_jieba_filter_fun, axis=1)
+    #print(df[[col_name, col_name_jieba, col_name_jieba_filter]])
 
-    print(df[[col_name, col_name_jieba, col_name_jieba_filter]])
+    tfidf = get_tfidf(df, col_name_jieba_filter)
+    print(tfidf)
 
-    tfidf_vector = get_tfidf(df, col_name_jieba_filter)
-    print(tfidf_vector)
+    tfidf_pca = get_tfidf_pca(tfidf, 10)
+    print(tfidf_pca)
+
     print("all is well")
