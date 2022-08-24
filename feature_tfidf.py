@@ -67,6 +67,14 @@ def col_jieba_filter_fun(series):
     return " ".join(col_list_filter)
 
 # 转成tfidf向量
+def get_tfidf(df, col_name):
+    text = df[col_name]
+    
+    vectorizer = TfidfVectorizer()
+    vector = vectorizer.fit_transform(text)
+    # 打印tfidf的大小
+    print(vector.shape)
+    return vector.toarray()
 
 
 if __name__ == "__main__":
@@ -89,4 +97,6 @@ if __name__ == "__main__":
 
     print(df[[col_name, col_name_jieba, col_name_jieba_filter]])
 
+    tfidf_vector = get_tfidf(df, col_name_jieba_filter)
+    print(tfidf_vector)
     print("all is well")
