@@ -104,13 +104,21 @@ def test_tfidf(num=0):
         for word, index in vectorizer.vocabulary_.items():
             fo.write("{}\t{}\n".format(word, vectorizer.idf_[index]))
 
+# 将文本列保存下来。格式：index + 文本
+def save_text():
+    file = col_name_jieba_filter + '_temp'
+    with open(file, "w") as fo:
+        for index, line in enumerate(df[col_name_jieba_filter]):
+            fo.write("{}:\t{}\n".format(index, line))
+
+
 if __name__ == "__main__":
     print("running...")
 
     # csv文件和待处理的列名
     data_path = './sample_20220821_spark.csv'
     col_name = 'tags'
-    col_name = 'skills'
+    #col_name = 'skills'
     col_name_jieba = col_name + '_jieba'
     col_name_jieba_filter = col_name_jieba + '_filter'
 
@@ -129,6 +137,8 @@ if __name__ == "__main__":
     tfidf_pca = get_tfidf_pca(tfidf, 10)
     print(tfidf_pca)
 
+    
+    save_text()
     print("all is well")
 
     print("============================test=============================")
