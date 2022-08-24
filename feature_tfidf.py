@@ -74,7 +74,7 @@ def get_tfidf(df, col_name):
     vectorizer = TfidfVectorizer()
     # 返回的是nparray
     vector = vectorizer.fit_transform(text)
-    return pd.DataFrame(vector.toarray())
+    return pd.DataFrame(vector.toarray()), vectorizer
 
 # 对tfidf降维到n维
 def get_tfidf_pca(tfidf, n=20):
@@ -83,6 +83,26 @@ def get_tfidf_pca(tfidf, n=20):
     tfidf_pca = pd.DataFrame(tfidf_pca)
     return tfidf_pca
 
+# 测试tfidf是否正确
+def test_tfidf(num=0):
+    # 获取第num条数据
+    words = df[col_name_jieba_filter][num].split(" ")
+    print(words)
+
+    # 交换vocabulary_的key和value。交换后可以通过索引得到词。
+    new_vocab = {}
+    for word, index in vectorizer.vocabulary_.items():
+        new_vocab[str(index)] = word
+
+    # 第num条数据的非零值对应的word
+    for index, value in enumerate(tfidf.iloc[num]):
+        if value:
+            print(new_vocab[str(index)], value)
+    
+    # 每个词的idf，保存为文件
+    with open("./word_idf_temp", "w") as fo:
+        for word, index in vectorizer.vocabulary_.items():
+            fo.write("{}\t{}\n".format(word, vectorizer.idf_[index]))
 
 if __name__ == "__main__":
     print("running...")
@@ -101,12 +121,17 @@ if __name__ == "__main__":
     # 对要处理的文本列进行预处理
     df[col_name_jieba] = df.apply(col_jieba_fun, axis=1)
     df[col_name_jieba_filter] = df.apply(col_jieba_filter_fun, axis=1)
-    #print(df[[col_name, col_name_jieba, col_name_jieba_filter]])
+    print(df[[col_name, col_name_jieba, col_name_jieba_filter]])
 
-    tfidf = get_tfidf(df, col_name_jieba_filter)
+    tfidf, vectorizer = get_tfidf(df, col_name_jieba_filter)
     print(tfidf)
 
     tfidf_pca = get_tfidf_pca(tfidf, 10)
     print(tfidf_pca)
 
     print("all is well")
+
+    print("============================test=============================")
+    # 测试第num条数据
+    test_tfidf(num=110)
+    
