@@ -17,7 +17,7 @@ def load_csv_data(data_path):
 
 def col_jieba_fun(series):
     '''
-    将某列的文本字符串转成列表并切词
+    将文本字符串转成列表并切词
     '''
     col = series[col_name]
 
@@ -27,8 +27,11 @@ def col_jieba_fun(series):
     else:
         col = re.split(",|，|/| ", col)
 
+    # 列表变字符串
     # 对于中文，进入jieba前不需要添加空格；不过，如果是中英文混合，就必须空格了
     col_str = " ".join(col)
+
+    # 切词
     col_list = jieba.lcut(col_str, cut_all=False)
     return col_list
 
@@ -37,9 +40,9 @@ def col_jieba_filter_fun(series):
     对切词后的列表进行过滤
     '''
     col_list_filter = []
-    # 得到tag列表
+    
+    # 得到切词列表
     col_list = series[col_name_jieba]
-    # print(tags_list[0])
 
     pun_masks_english = [",", ".", "/", "[", "]", "{", "}", "(", ")", ":", "*", "#", "!", " ", "\"", "\\"]
     pun_masks_chinese = ["，", "。", "、", "（", "）", "：", "！", "”", "“"]
