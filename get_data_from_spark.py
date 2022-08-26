@@ -30,6 +30,7 @@ cv_df = spark.sql('''
                  ''')\
                .withColumnRenamed('id','cv_id')
 
+# jd似乎遗漏了tags
 jd_df = spark.sql('''
                     select 
                          jd_id, title, category_name, description, requirement 
