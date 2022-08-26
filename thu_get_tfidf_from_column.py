@@ -17,7 +17,7 @@ def load_csv_data(data_path):
 
 def col_jieba_fun(series):
     '''
-    将文本字符串转成列表并切词
+    将文本字符串切词成列表
     '''
     col = series[col_name]
 
@@ -75,7 +75,7 @@ def col_jieba_filter_fun(series):
 
 def get_tfidf(df, col_name):
     '''
-    转成tfidf向量
+    将文本列转成tfidf向量
     '''
     text = df[col_name]
     
@@ -85,13 +85,12 @@ def get_tfidf(df, col_name):
 
 def get_tfidf_pca(tfidf, n=20):
     '''
-    对tfidf降维到n维
+    将tfidf向量降维
     '''
     pca = PCA(n_components=n)
     tfidf_pca = pca.fit_transform(tfidf)
     tfidf_pca = pd.DataFrame(tfidf_pca)
     return tfidf_pca
-
 
 def get_tfidf_pca_from_single_col(data_path, col_name, n=10):
     '''
@@ -126,7 +125,7 @@ def get_tfidf_pca_from_single_col(data_path, col_name, n=10):
 
 def col_merge_fun(series):
     '''
-    合并多列
+    合并多个文本列
     '''
     merge = ''
     for col in col_name_jieba_filter_list:
