@@ -92,8 +92,10 @@ def get_tfidf_pca(tfidf, n=20):
     tfidf_pca = pd.DataFrame(tfidf_pca)
     return tfidf_pca
 
-# 测试tfidf是否正确
 def test_tfidf(num=0):
+    '''
+    测试tfidf是否正确
+    '''
     # 获取第num条数据
     words = df[col_name_jieba_filter][num].split(" ")
     print(words)
@@ -113,8 +115,10 @@ def test_tfidf(num=0):
         for word, index in vectorizer.vocabulary_.items():
             fo.write("{}\t{}\n".format(word, vectorizer.idf_[index]))
 
-# 将文本列保存下来。格式：index + 文本
 def save_text():
+    '''
+    将文本列保存下来。格式：index + 文本
+    '''
     file = col_name_jieba_filter + '_temp'
     with open(file, "w") as fo:
         for index, line in enumerate(df[col_name_jieba_filter]):
