@@ -190,7 +190,7 @@ if __name__ == "__main__":
     
     print("=========================从多列获取tfidf_pca向量===============================")
     col_name_list = ['title', 'category_name', 'tags']
-    get_tfidf_pca_from_multi_col(data_path, col_name_list, 10)
+    get_tfidf_pca_from_multi_col(data_path, col_name_list, n=10)
 
     print("all is well")
 
