@@ -92,13 +92,17 @@ def get_tfidf_pca(tfidf, n=20):
     tfidf_pca = pd.DataFrame(tfidf_pca)
     return tfidf_pca
 
-def get_jieba_filter_from_col(data_path, col_name):
 
+def get_tfidf_pca_from_single_col(data_path, col_name, n=10):
+    '''
+    从单一文本列计算tfidf_pca
+    '''
     global col_name_jieba 
     col_name_jieba = col_name + '_jieba'
 
     global col_name_jieba_filter 
     col_name_jieba_filter = col_name_jieba + '_filter'
+    
     # 读取csv文件
     df = load_csv_data(data_path)
 
@@ -112,16 +116,82 @@ def get_jieba_filter_from_col(data_path, col_name):
     df[col_name_jieba_filter] = df.apply(col_jieba_filter_fun, axis=1)
     print(df[[col_name, col_name_jieba, col_name_jieba_filter]])
 
-    pass
+    # step4 得到tfidf
+    tfidf, vectorizer = get_tfidf(df, col_name_jieba_filter)
+    print(tfidf)
+
+    # step5 得到tfidf_pca
+    tfidf_pca = get_tfidf_pca(tfidf, n)
+    print(tfidf_pca)
+
+def col_merge_fun(series):
+    '''
+    合并多列
+    '''
+    merge = ''
+    for col in col_name_jieba_filter_list:
+        merge = merge + series[col] + ' '
+    return merge.strip(' ')
+
+def get_tfidf_pca_from_multi_col(data_path, col_name_list, n):
+    '''
+    从多个文本列计算tfidf_pca
+    '''
+    # 读取csv文件
+    df = load_csv_data(data_path)
+
+    global col_name
+
+    global col_name_jieba_filter_list
+    col_name_jieba_filter_list = []
+
+    for col_name in col_name_list:
+
+        global col_name_jieba 
+        col_name_jieba = col_name + '_jieba'
+
+        global col_name_jieba_filter 
+        col_name_jieba_filter = col_name_jieba + '_filter'
+
+        col_name_jieba_filter_list.append(col_name_jieba_filter)
+        # step1 空值填充
+        df[col_name].fillna('', inplace=True)
+
+        # step2 jieba分词
+        df[col_name_jieba] = df.apply(col_jieba_fun, axis=1)
+
+        # step3 分词过滤
+        df[col_name_jieba_filter] = df.apply(col_jieba_filter_fun, axis=1)
+        print(df[[col_name, col_name_jieba, col_name_jieba_filter]])
+
+    print(col_name_jieba_filter_list)
+    
+    merge_col_jieba_filter = "_".join(col_name_list) + '_jieba_filter'
+    df[merge_col_jieba_filter] = df.apply(col_merge_fun, axis=1)
+    print(df[[merge_col_jieba_filter]])
+
+    # step4 得到tfidf
+    tfidf, vectorizer = get_tfidf(df, merge_col_jieba_filter)
+    print(tfidf)
+
+    # step5 得到tfidf_pca
+    tfidf_pca = get_tfidf_pca(tfidf, n)
+    print(tfidf_pca)
 
 
 if __name__ == "__main__":
     print("running...")
 
     data_path = '../data/all_sample_20220821_spark.csv'
-    #col_name = 'tags'
-    col_name = 'skills'
     num = 10
+    
+    print("=========================从单列获取tfidf_pca向量===============================")
+    col_name = 'tags'
+    get_tfidf_pca_from_single_col(data_path, col_name, n=10)
+    
+    print("=========================从多列获取tfidf_pca向量===============================")
+    col_name_list = ['title', 'category_name', 'tags']
+    get_tfidf_pca_from_multi_col(data_path, col_name_list, 10)
 
     print("all is well")
 
