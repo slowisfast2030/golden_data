@@ -92,10 +92,8 @@ def get_tfidf_pca(tfidf, n=20):
     tfidf_pca = pd.DataFrame(tfidf_pca)
     return tfidf_pca
 
-def get_tfidf_pca_from_col(data_path, col_name, n=10):
-    '''
-    从给定文本列计算tfidf_pca
-    '''
+def get_jieba_filter_from_col(data_path, col_name):
+
     global col_name_jieba 
     col_name_jieba = col_name + '_jieba'
 
@@ -114,25 +112,16 @@ def get_tfidf_pca_from_col(data_path, col_name, n=10):
     df[col_name_jieba_filter] = df.apply(col_jieba_filter_fun, axis=1)
     print(df[[col_name, col_name_jieba, col_name_jieba_filter]])
 
-    # step4 得到tfidf
-    tfidf, vectorizer = get_tfidf(df, col_name_jieba_filter)
-    print(tfidf)
-
-    # step5 得到tfidf_pca
-    tfidf_pca = get_tfidf_pca(tfidf, n)
-    print(tfidf_pca)
+    pass
 
 
 if __name__ == "__main__":
     print("running...")
 
     data_path = '../data/all_sample_20220821_spark.csv'
-    col_name = 'tags'
-    #col_name = 'skills'
-    
+    #col_name = 'tags'
+    col_name = 'skills'
     num = 10
-
-    get_tfidf_pca_from_col(data_path, col_name, n=10)
 
     print("all is well")
 
