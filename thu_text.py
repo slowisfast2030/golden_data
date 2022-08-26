@@ -92,49 +92,15 @@ def get_tfidf_pca(tfidf, n=20):
     tfidf_pca = pd.DataFrame(tfidf_pca)
     return tfidf_pca
 
-def test_tfidf(num=0):
+def get_tfidf_pca_from_col(data_path, col_name, n=10):
     '''
-    测试tfidf是否正确
+    从给定文本列计算tfidf_pca
     '''
-    # 获取第num条数据
-    words = df[col_name_jieba_filter][num].split(" ")
-    print(words)
-
-    # 交换vocabulary_的key和value。交换后可以通过索引得到词。
-    new_vocab = {}
-    for word, index in vectorizer.vocabulary_.items():
-        new_vocab[str(index)] = word
-
-    # 第num条数据的非零值对应的word
-    for index, value in enumerate(tfidf.iloc[num]):
-        if value:
-            print(new_vocab[str(index)], value)
-    
-    # 每个词的idf，保存为文件
-    with open("./word_idf_temp", "w") as fo:
-        for word, index in vectorizer.vocabulary_.items():
-            fo.write("{}\t{}\n".format(word, vectorizer.idf_[index]))
-
-def save_text():
-    '''
-    将文本列保存下来。格式：index + 文本
-    '''
-    file = col_name_jieba_filter + '_temp'
-    with open(file, "w") as fo:
-        for index, line in enumerate(df[col_name_jieba_filter]):
-            fo.write("{}:\t{}\n".format(index, line))
-
-
-if __name__ == "__main__":
-    print("running...")
-
-    # csv文件和待处理的列名
-    data_path = '../data/all_sample_20220821_spark.csv'
-
-    col_name = 'description'
+    global col_name_jieba 
     col_name_jieba = col_name + '_jieba'
-    col_name_jieba_filter = col_name_jieba + '_filter'
 
+    global col_name_jieba_filter 
+    col_name_jieba_filter = col_name_jieba + '_filter'
     # 读取csv文件
     df = load_csv_data(data_path)
 
@@ -153,13 +119,22 @@ if __name__ == "__main__":
     print(tfidf)
 
     # step5 得到tfidf_pca
-    tfidf_pca = get_tfidf_pca(tfidf, 10)
+    tfidf_pca = get_tfidf_pca(tfidf, n)
     print(tfidf_pca)
 
-    #save_text()
+
+if __name__ == "__main__":
+    print("running...")
+
+    data_path = '../data/all_sample_20220821_spark.csv'
+    col_name = 'tags'
+    #col_name = 'skills'
+    
+    num = 10
+
+    get_tfidf_pca_from_col(data_path, col_name, n=10)
+
     print("all is well")
 
-    #print("============================test=============================")
-    # 测试第num条数据
-    #test_tfidf(num=110)
+    
     
