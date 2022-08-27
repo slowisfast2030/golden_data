@@ -116,9 +116,10 @@ def get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension):
     # 读取csv文件
     df = load_csv_data(data_path)
 
+    # 这里定义global变量，是因为想让这些变量在其他地方可见
     global col_name
-
     global col_name_jieba_filter_list
+
     col_name_jieba_filter_list = []
 
     for col_name in col_name_list:
