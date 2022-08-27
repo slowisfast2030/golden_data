@@ -24,7 +24,7 @@ def col_jieba_fun(series, col_name):
     将文本字符串切词成列表
     '''
     col = series[col_name]
-    
+    #print(col)
     # 加入特例判断 *Tracks。'[{},{}]', json无法解析。
     if col_name.endswith("Tracks"):
         col_list = jieba.lcut(col, cut_all=False)
@@ -174,6 +174,8 @@ if __name__ == "__main__":
     col_name_list = ['title', 'category_name', 'tags']
     col_name_list = ['currentPosition', 'desiredPosition']
     col_name_list = ['jobTracks']
+    col_name_list = ['projectTracks']
+    col_name_list = ['tags']
     get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension=10)
 
     print("all is well")
