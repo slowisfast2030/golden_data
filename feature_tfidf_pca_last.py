@@ -24,6 +24,11 @@ def col_jieba_fun(series, col_name):
     将文本字符串切词成列表
     '''
     col = series[col_name]
+    
+    # 加入特例判断 *Tracks。'[{},{}]', json无法解析。
+    if col_name.endswith("Tracks"):
+        col_list = jieba.lcut(col, cut_all=False)
+        return col_list
 
     # 字符串变列表
     if col.startswith("[") and col.endswith("]"):
@@ -167,6 +172,21 @@ if __name__ == "__main__":
     
     print("\n从文本列获取tfidf_pca向量\n")
     col_name_list = ['title', 'category_name', 'tags']
-    get_tfidf_pca_from_text_cols(data_path, col_name_list[:], dimension=10)
+    col_name_list = ['currentPosition', 'desiredPosition']
+    col_name_list = ['jobTracks']
+    get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension=10)
 
     print("all is well")
+
+'''
+jd可以做3个向量
+title + category_name + tags
+description
+requirement
+
+cv可以做4个向量：
+currentPosition + desiredPosition
+skills
+jobTracks
+projectTracks
+'''
