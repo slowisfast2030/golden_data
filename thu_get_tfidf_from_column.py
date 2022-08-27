@@ -184,9 +184,9 @@ if __name__ == "__main__":
     data_path = '../data/all_sample_20220821_spark.csv'
     num = 10
     
-    print("=========================从单列获取tfidf_pca向量===============================")
-    col_name = 'tags'
-    get_tfidf_pca_from_single_col(data_path, col_name, n=10)
+    # print("=========================从单列获取tfidf_pca向量===============================")
+    # col_name = 'category_name'
+    # get_tfidf_pca_from_single_col(data_path, col_name, n=10)
     
     print("=========================从多列获取tfidf_pca向量===============================")
     col_name_list = ['title', 'category_name', 'tags']
