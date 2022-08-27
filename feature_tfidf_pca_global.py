@@ -18,7 +18,7 @@ def load_csv_data(data_path):
     df = pd.read_csv(data_path)
     return df
 
-def col_jieba_fun(series, col_name):
+def col_jieba_fun(series):
     '''
     将文本字符串切词成列表
     '''
@@ -38,7 +38,7 @@ def col_jieba_fun(series, col_name):
     col_list = jieba.lcut(col_str, cut_all=False)
     return col_list
 
-def col_jieba_filter_fun(series, col_name_jieba):
+def col_jieba_filter_fun(series):
     '''
     对切词后的列表进行过滤
     '''
@@ -95,7 +95,7 @@ def get_tfidf_pca(tfidf, n=20):
     tfidf_pca = pd.DataFrame(tfidf_pca)
     return tfidf_pca
 
-def col_merge_fun(series, col_name_jieba_filter_list):
+def col_merge_fun(series):
     '''
     合并多个文本列
     '''
@@ -116,6 +116,12 @@ def get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension):
     # 读取csv文件
     df = load_csv_data(data_path)
 
+    # 这里定义global变量，是因为想让这些变量在其他函数内部可见
+    global col_name
+    global col_name_jieba 
+    global col_name_jieba_filter 
+    global col_name_jieba_filter_list
+
     # 存储经过分词和过滤后的列名
     col_name_jieba_filter_list = []
 
@@ -129,10 +135,10 @@ def get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension):
         df[col_name].fillna('', inplace=True)
 
         # step2 jieba分词
-        df[col_name_jieba] = df.apply(col_jieba_fun, axis=1, args=(col_name, ))
+        df[col_name_jieba] = df.apply(col_jieba_fun, axis=1)
 
         # step3 分词过滤
-        df[col_name_jieba_filter] = df.apply(col_jieba_filter_fun, axis=1, args=(col_name_jieba, ))
+        df[col_name_jieba_filter] = df.apply(col_jieba_filter_fun, axis=1)
 
         print("\n=================================={}==================================".format(col_name))
         print(df[[col_name, col_name_jieba, col_name_jieba_filter]])
@@ -140,7 +146,7 @@ def get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension):
     print(col_name_jieba_filter_list)
     
     merge_col_jieba_filter = "_".join(col_name_list) + '_jieba_filter'
-    df[merge_col_jieba_filter] = df.apply(col_merge_fun, axis=1, args=(col_name_jieba_filter_list, ))
+    df[merge_col_jieba_filter] = df.apply(col_merge_fun, axis=1)
 
     print("\n=================================={}==================================".format('以上各列分词过滤后合并的新列'))
     print(df[[merge_col_jieba_filter]])
