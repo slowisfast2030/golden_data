@@ -8,7 +8,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import PCA
 
 '''
-
+不论是单列文本还是多列文本都可以通过这个函数统一获取tfidf_pca向量
 '''
 
 def load_csv_data(data_path):
