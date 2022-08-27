@@ -44,7 +44,7 @@ def col_jieba_filter_fun(series):
     '''
     col_list_filter = []
     
-    # 得到切词列表
+    # 得到切词后的文本列表
     col_list = series[col_name_jieba]
 
     pun_masks_english = [",", ".", "/", "[", "]", "{", "}", "(", ")", ":", "*", "#", "!", " ", "\"", "\\"]
@@ -118,19 +118,19 @@ def get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension):
 
     # 这里定义global变量，是因为想让这些变量在其他函数内部可见
     global col_name
+    global col_name_jieba 
+    global col_name_jieba_filter 
     global col_name_jieba_filter_list
 
+    # 存储经过分词和过滤后的列名
     col_name_jieba_filter_list = []
 
     for col_name in col_name_list:
 
-        global col_name_jieba 
         col_name_jieba = col_name + '_jieba'
-
-        global col_name_jieba_filter 
         col_name_jieba_filter = col_name_jieba + '_filter'
-
         col_name_jieba_filter_list.append(col_name_jieba_filter)
+
         # step1 空值填充
         df[col_name].fillna('', inplace=True)
 
@@ -139,12 +139,16 @@ def get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension):
 
         # step3 分词过滤
         df[col_name_jieba_filter] = df.apply(col_jieba_filter_fun, axis=1)
+
+        print("\n=================================={}==================================".format(col_name))
         print(df[[col_name, col_name_jieba, col_name_jieba_filter]])
 
     print(col_name_jieba_filter_list)
     
     merge_col_jieba_filter = "_".join(col_name_list) + '_jieba_filter'
     df[merge_col_jieba_filter] = df.apply(col_merge_fun, axis=1)
+
+    print("\n=================================={}==================================".format('以上各列分词过滤后合并的新列'))
     print(df[[merge_col_jieba_filter]])
 
     # step4 得到tfidf
@@ -163,9 +167,9 @@ if __name__ == "__main__":
     data_path = '../data/all_sample_20220821_spark.csv'
     num = 10
     
-    print("=========================从文本列获取tfidf_pca向量===============================")
+    print("\n从文本列获取tfidf_pca向量\n")
     col_name_list = ['title', 'category_name', 'tags']
-    get_tfidf_pca_from_text_cols(data_path, col_name_list[:2], dimension=10)
+    get_tfidf_pca_from_text_cols(data_path, col_name_list[:], dimension=10)
 
     print("all is well")
 
