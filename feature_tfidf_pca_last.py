@@ -104,12 +104,13 @@ def col_merge_fun(series):
         merge = merge + series[col] + ' '
     return merge.strip(' ')
 
-def get_tfidf_pca_from_text_cols(data_path, col_name_list, n):
+def get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension):
     '''
     从多个文本列计算tfidf_pca
 
     :param data_path csv数据路径
     :param col_name_list 文本列列名列表
+    :param dimension tfidf经过pca降维后的维度
     :returns: tfidf_pca向量
     '''
     # 读取csv文件
@@ -150,7 +151,7 @@ def get_tfidf_pca_from_text_cols(data_path, col_name_list, n):
     print(tfidf)
 
     # step5 得到tfidf_pca
-    tfidf_pca = get_tfidf_pca(tfidf, n)
+    tfidf_pca = get_tfidf_pca(tfidf, dimension)
     print(tfidf_pca)
     return tfidf_pca
 
@@ -163,7 +164,7 @@ if __name__ == "__main__":
     
     print("=========================从文本列获取tfidf_pca向量===============================")
     col_name_list = ['title', 'category_name', 'tags']
-    get_tfidf_pca_from_text_cols(data_path, col_name_list, n=10)
+    get_tfidf_pca_from_text_cols(data_path, col_name_list[:2], dimension=10)
 
     print("all is well")
 
