@@ -153,11 +153,14 @@ def get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension):
 
     # step4 得到tfidf
     tfidf, vectorizer = get_tfidf(df, merge_col_jieba_filter)
+    print("\n=================================={}==================================".format('tfidf向量'))
     print(tfidf)
 
     # step5 得到tfidf_pca
     tfidf_pca = get_tfidf_pca(tfidf, dimension)
+    print("\n=================================={}==================================".format('tfidf_pca向量'))
     print(tfidf_pca)
+
     return tfidf_pca
 
 
