@@ -89,22 +89,29 @@ def get_text_jieba_filter(data_path):
     cv_jd = ['cv', 'jd']
     cv_jd_columns = [cv_columns, jd_columns]
 
+    col_jieba_filter_list = []
     for col, col_columns in zip(cv_jd, cv_jd_columns):
         col_text = col + '_text'
         col_text_jieba = col_text + '_jieba'
         col_text_jieba_filter = col_text_jieba + '_filter'
+        col_jieba_filter_list.append(col_text_jieba_filter)
         
         all_data[col_text] = all_data.apply(col_merge_fun, axis=1, args=(col_columns[1:], ))
         all_data[col_text_jieba] = all_data.apply(col_jieba_fun, axis=1, args=(col_text, ))
         all_data[col_text_jieba_filter] = all_data.apply(col_jieba_filter_fun, axis=1, args=(col_text_jieba, ))
 
+    all_data["equal_words"] = all_data.apply(get_equal_word_num, axis=1, args=(col_jieba_filter_list, ))
     return all_data
 
 def get_equal_word_num(series, col_list):
     cv_text_jieba_filter = series[col_list[0]]
     jd_text_jieba_filter = series[col_list[1]]
-    
-    pass
+    # 这里不能去重吧？！
+    # 如何计算这里的重复词的数目呢？
+    # 有一个隐患：这里应该找到关键词！！！
+    res = set(cv_text_jieba_filter).intersection(set(jd_text_jieba_filter))
+    return res
+
 
 if __name__ == "__main__":
     print("running...")
