@@ -80,6 +80,12 @@ def get_text_jieba_filter(data_path):
     '''
     all_data = load_csv_data(data_path)
 
+    # 空值填充
+    for col in cv_columns[1:]:
+        all_data[col].fillna('', inplace=True)
+    for col in jd_columns[1:]:
+        all_data[col].fillna('', inplace=True)
+
     cv_jd = ['cv', 'jd']
     cv_jd_columns = [cv_columns, jd_columns]
 
@@ -93,6 +99,12 @@ def get_text_jieba_filter(data_path):
         all_data[col_text_jieba_filter] = all_data.apply(col_jieba_filter_fun, axis=1, args=(col_text_jieba, ))
 
     return all_data
+
+def get_equal_word_num(series, col_list):
+    cv_text_jieba_filter = series[col_list[0]]
+    jd_text_jieba_filter = series[col_list[1]]
+    
+    pass
 
 if __name__ == "__main__":
     print("running...")
