@@ -92,19 +92,20 @@ def get_salary(data_path):
     给定数据路径，得到解析后的currentSalary和desiredSalary
     '''
     all_data = pd.read_csv(data_path)
-    cv_salary_columns = ['currentSalary', 'desiredSalary']
-    cv_salary_data = all_data[cv_salary_columns]
 
-    cv_salary_data['desiredSalary'].fillna('', inplace=True)
-    cv_salary_data['currentSalary'].fillna('', inplace=True)
+    all_data['desiredSalary'].fillna('', inplace=True)
+    all_data['currentSalary'].fillna('', inplace=True)
 
-    cv_salary_data['parsed_desiredSalary'] = cv_salary_data.apply(get_salary_year_cv, axis=1, args=('desiredSalary', ))
-    cv_salary_data['parsed_currentSalary'] = cv_salary_data.apply(get_salary_year_cv, axis=1, args=('currentSalary', ))
-    return cv_salary_data
+    all_data['parsed_desiredSalary'] = all_data.apply(get_salary_year_cv, axis=1, args=('desiredSalary', ))
+    all_data['parsed_currentSalary'] = all_data.apply(get_salary_year_cv, axis=1, args=('currentSalary', ))
+    return all_data
 
 if __name__ == "__main__":
     print("running...")
 
     data_path = '../data/all_sample_20220821_spark.csv'
-    cv_salary_data = get_salary(data_path)
-    print(cv_salary_data)
+    all_data = get_salary(data_path)
+
+    print(all_data[['desiredSalary', 'currentSalary', 'parsed_desiredSalary', 'parsed_currentSalary']])
+
+    print('all is well')
