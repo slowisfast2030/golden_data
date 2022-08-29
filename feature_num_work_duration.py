@@ -4,7 +4,7 @@ import re
 import numpy as np
 import pandas as pd
 from zhconv import convert
-
+from datetime import datetime
 
 def load_csv_data(data_path):
     '''
@@ -12,8 +12,6 @@ def load_csv_data(data_path):
     '''
     df = pd.read_csv(data_path)
     return df
-
-from datetime import datetime
 
 def parse_ym(s):
     year_s, mon_s = s.split('-')
@@ -81,5 +79,6 @@ if __name__ == "__main__":
 
     data_path = '../data/all_sample_20220821_spark.csv'
     all_data = get_work_duration_mean(data_path)
-    
+
     print(all_data[['job_time_delta', 'work_duration_mean']])
+    print(all_data[['job_time_delta', 'work_duration_mean']].info())
