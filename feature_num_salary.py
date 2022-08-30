@@ -95,6 +95,7 @@ def get_salary(data_path):
 
     all_data['parsed_desiredSalary'] = all_data.apply(get_salary_year_cv, axis=1, args=('desiredSalary', ))
     all_data['parsed_currentSalary'] = all_data.apply(get_salary_year_cv, axis=1, args=('currentSalary', ))
+    
     return all_data
 
 if __name__ == "__main__":

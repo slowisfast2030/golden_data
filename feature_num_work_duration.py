@@ -37,7 +37,7 @@ def get_job_time_fun(series, col):
             start = parse_ym(startDate)
             end = parse_ym(endDate)
 
-            # 这个down_limit该如何定呢？
+            # 这个down_limit该如何定呢？低频+生活实际
             down_limit = parse_ym('1990-01')
             up_limit = datetime.now()
 
@@ -48,7 +48,9 @@ def get_job_time_fun(series, col):
                 continue
 
             delta = (end - start).days
-
+            if delta > 3650:
+                 continue
+            
             time_pair_list.append((startDate, endDate, delta))
         
         return time_pair_list
@@ -80,5 +82,5 @@ if __name__ == "__main__":
     data_path = '../data/all_sample_20220821_spark.csv'
     all_data = get_work_duration_mean(data_path)
 
-    print(all_data[['job_time_delta', 'work_duration_mean']])
-    print(all_data[['job_time_delta', 'work_duration_mean']].info())
+    print(all_data[['jobTracks', 'job_time_delta', 'work_duration_mean']])
+    print(all_data[['jobTracks', 'job_time_delta', 'work_duration_mean']].info())
