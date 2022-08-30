@@ -110,7 +110,7 @@ def get_equal_word_num(series, col_list):
     # 如何计算这里的重复词的数目呢？
     # 有一个隐患：这里应该找到关键词！！！
     res = set(cv_text_jieba_filter).intersection(set(jd_text_jieba_filter))
-    return res
+    return len(res)
 
 
 if __name__ == "__main__":
@@ -118,7 +118,7 @@ if __name__ == "__main__":
 
     data_path = '../data/all_sample_20220821_spark.csv'
     all_data = get_text_jieba_filter(data_path)
-
+    
 
     print("all is well!")
 

@@ -48,6 +48,7 @@ def get_job_time_fun(series, col):
                 continue
 
             delta = (end - start).days
+            # 时间差的上限，经过分位点统计得到
             if delta > 3650:
                  continue
             
