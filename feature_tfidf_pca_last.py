@@ -176,6 +176,7 @@ if __name__ == "__main__":
     col_name_list = ['jobTracks']
     col_name_list = ['projectTracks']
     col_name_list = ['tags']
+    col_name_list = ['skills']
     get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension=10)
 
     print("all is well")
