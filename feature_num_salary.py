@@ -1,10 +1,7 @@
-import json
-import jieba
 import re
 import numpy as np
 import pandas as pd
 from zhconv import convert
-from datetime import datetime
 
 def load_csv_data(data_path):
     '''
@@ -25,7 +22,7 @@ def get_salary_year_cv(series, salary_col):
     salary = salary.lower()
 
     # case 10.5k*15.5
-    res = re.search(r'(\d+\.*\d*)([k,w])[\*,x, ]+(\d+\.*\d*)', salary)
+    res = re.search(r'(\d+\.*\d*)([k,w])[\*,x,·, ]+(\d+\.*\d*)', salary)
     if res:
         num1 = float(res.group(1))
         unit = res.group(2)
@@ -35,7 +32,7 @@ def get_salary_year_cv(series, salary_col):
         return salary_year if unit == "k" else 10 * salary_year
     
     # case 10.5*15.5k
-    res = re.search(r'(\d+\.*\d*)[\*,x, ]+(\d+\.*\d*)([k,w])', salary)
+    res = re.search(r'(\d+\.*\d*)[\*,x,·, ]+(\d+\.*\d*)([k,w])', salary)
     if res:
         num1 = float(res.group(1))
         num2 = float(res.group(2))
@@ -77,7 +74,7 @@ def get_salary_year_cv(series, salary_col):
         return salary_year
 
     # 9000元/月*12月
-    res = re.search(r'(\d+)元/月[\*,x, ]+(\d+)', salary)
+    res = re.search(r'(\d+)元/月[\*,x,·, ]+(\d+)', salary)
     if res:
         num1 = float(res.group(1))
         num2 = float(res.group(2))
