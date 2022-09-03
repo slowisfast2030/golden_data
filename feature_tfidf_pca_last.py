@@ -178,7 +178,7 @@ if __name__ == "__main__":
     col_name_list = ['skills']
     col_name_list = ['currentPosition', 'desiredPosition']
 
-    get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension=10)
+    tfidf_pca = get_tfidf_pca_from_text_cols(data_path, col_name_list, dimension=10)
 
     print("all is well")
 
