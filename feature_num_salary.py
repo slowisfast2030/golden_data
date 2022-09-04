@@ -105,5 +105,8 @@ if __name__ == "__main__":
     all_data = get_salary(data_path)
 
     print(all_data[['desiredSalary', 'currentSalary', 'parsed_desiredSalary', 'parsed_currentSalary']])
+    print(all_data[['desiredSalary', 'currentSalary', 'parsed_desiredSalary', 'parsed_currentSalary']].info())
+
+    all_data[['parsed_desiredSalary', 'parsed_currentSalary']].to_csv('../data/salary.csv')
 
     print('all is well')

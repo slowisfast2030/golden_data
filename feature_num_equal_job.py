@@ -6,8 +6,8 @@ import pandas as pd
 from zhconv import convert
 
 
-cv_columns = ['cv_id', 'currentPosition', 'desiredPosition', 'industry', 'desiredIndustry', 'majorName', 'skills', 'eduTracks', 'jobTracks', 'projectTracks']
-jd_columns = ['jd_id', 'title', 'category_name', 'tags', 'description', 'requirement']
+cv_columns = ['cv_id', 'currentPosition', 'desiredPosition', 'skills']
+jd_columns = ['jd_id', 'title', 'category_name', 'tags']
 
 
 def load_csv_data(data_path):
@@ -100,7 +100,7 @@ def get_text_jieba_filter(data_path):
         all_data[col_text_jieba] = all_data.apply(col_jieba_fun, axis=1, args=(col_text, ))
         all_data[col_text_jieba_filter] = all_data.apply(col_jieba_filter_fun, axis=1, args=(col_text_jieba, ))
 
-    all_data["equal_words"] = all_data.apply(get_equal_word_num, axis=1, args=(col_jieba_filter_list, ))
+    all_data["equal_job"] = all_data.apply(get_equal_word_num, axis=1, args=(col_jieba_filter_list, ))
     return all_data
 
 def get_equal_word_num(series, col_list):
@@ -118,8 +118,8 @@ if __name__ == "__main__":
 
     data_path = '../data/all_sample_20220821_spark.csv'
     all_data = get_text_jieba_filter(data_path)
-    print(all_data["equal_words"])
-
+    print(all_data["equal_job"])
+    all_data[['equal_job']].to_csv('../data/equal_job.csv')
     print("all is well!")
 
 
